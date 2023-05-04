@@ -112,6 +112,7 @@ static const char* kOutputDetections = "face_detections";
       if (packet.IsEmpty()) {
         NSLog(@"Empty packet.");
         // call delegate with no outputs
+        [_delegate faceDetection:self didOutputDetections:[NSMutableArray array]];
         return;
       }
       const auto& detections = packet.Get<std::vector<::mediapipe::Detection>>();

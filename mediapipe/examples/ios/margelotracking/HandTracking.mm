@@ -8,7 +8,7 @@
 static NSString* const kGraphName = @"hand_tracking_mobile_gpu";
 static const char* kInputStream = "input_video";
 static const char* kOutputStream = "output_video";
-static const char* kOutputLandmarks = "output_landmarks";
+static const char* kOutputLandmarks = "hand_landmarks";
 static const char* kNumHandsInputSidePacket = "num_hands";
 
 static const int kNumHands = 2;
@@ -45,6 +45,7 @@ static const int kNumHands = 2;
       float y = l.y();
       float z = l.z();
       Landmark *landmark = [[Landmark alloc] initWithCoordinates:x y:y z:z];
+      [landmarks addObject:landmark];
     }
     _landmarks = landmarks;
   }
@@ -134,7 +135,9 @@ static const int kNumHands = 2;
             fromStream:(const std::string&)streamName {
     if (streamName == kOutputLandmarks) {
       if (packet.IsEmpty()) {
+        NSLog(@"Empty packet.");
         // call delegate with no outputs
+        [_delegate didOutputHandTracking:[NSMutableArray array]];
         return;
       }
       const auto& handLandmarkLists = packet.Get<std::vector<::mediapipe::NormalizedLandmarkList>>();
