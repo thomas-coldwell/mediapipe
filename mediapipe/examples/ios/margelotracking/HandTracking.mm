@@ -10,6 +10,7 @@ static const char* kInputStream = "input_video";
 static const char* kOutputStream = "output_video";
 static const char* kOutputLandmarks = "hand_landmarks";
 static const char* kNumHandsInputSidePacket = "num_hands";
+static const char* kModelComplexity = "model_complexity";
 
 static const int kNumHands = 2;
 
@@ -81,6 +82,7 @@ static const int kNumHands = 2;
   // Create MediaPipe graph with mediapipe::CalculatorGraphConfig proto object.
   MPPGraph* newGraph = [[MPPGraph alloc] initWithGraphConfig:config];
   [newGraph setSidePacket:(mediapipe::MakePacket<int>(kNumHands)) named:kNumHandsInputSidePacket];
+  [newGraph setSidePacket:(mediapipe::MakePacket<int>(0)) named:kModelComplexity];
   [newGraph addFrameOutputStream:kOutputStream outputPacketType:MPPPacketTypePixelBuffer];
   [newGraph addFrameOutputStream:kOutputLandmarks outputPacketType:MPPPacketTypeRaw];
   return newGraph;
