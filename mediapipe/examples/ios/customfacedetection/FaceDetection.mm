@@ -22,12 +22,13 @@ static const char* kOutputDetections = "face_detections";
     _y = detection.location_data().relative_bounding_box().ymin();
     _width = detection.location_data().relative_bounding_box().width();
     _height = detection.location_data().relative_bounding_box().height();
+    _score = detection.score()[0];
   }
   return self;
 };
 @end
 
-@interface FaceDetection() <MPPGraphDelegate> 
+@interface FaceDetection() <MPPGraphDelegate>
 @property (nonatomic) MPPGraph* mediapipeGraph;
 @property (nonatomic) MPPTimestampConverter* timestampConverter;
 @end
@@ -110,13 +111,16 @@ static const char* kOutputDetections = "face_detections";
     if (streamName == kOutputDetections) {
       if (packet.IsEmpty()) {
         NSLog(@"Empty packet.");
+        // call delegate with no outputs
         return;
       }
       const auto& detections = packet.Get<std::vector<::mediapipe::Detection>>();
       NSMutableArray *result = [NSMutableArray array];
       for (const auto& detection : detections) {
         BoundingBox *box = [[BoundingBox alloc] initWithDetection:detection];
-        [result addObject:box];
+        // if (box.score > 0.5) {
+          [result addObject:box];
+        // }
       }
       [_delegate faceDetection:self didOutputDetections:result];
     }

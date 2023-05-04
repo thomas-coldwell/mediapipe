@@ -7,6 +7,9 @@
 input_stream: "input_video"
 output_stream: "output_video"
 
+# Detected faces. (std::vector<Detection>)
+output_stream: "detections"
+
 # Throttles the images flowing downstream for flow control. It passes through
 # the very first incoming image unaltered, and waits for
 # TfLiteTensorsToDetectionsCalculator downstream in the graph to finish

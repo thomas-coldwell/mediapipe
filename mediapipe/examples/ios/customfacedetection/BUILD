@@ -48,16 +48,23 @@ objc_library(
     ],
     data = [
         "//mediapipe/graphs/face_detection:face_detection_mobile_gpu.binarypb",
-        "//mediapipe/modules/face_detection:face_detection_short_range.tflite",
+        "//mediapipe/modules/face_detection:face_detection_full_range_sparse.tflite",
     ],
     visibility = ["//visibility:public"],
     deps = [
-        "//mediapipe/examples/ios/common:CommonMediaPipeAppLibrary",
+        "//mediapipe/objc:mediapipe_framework_ios",
+        "//mediapipe/objc:mediapipe_input_sources_ios",
+        "//mediapipe/objc:mediapipe_layer_renderer",
+        "//third_party/apple_frameworks:AVFoundation",
+        "//third_party/apple_frameworks:CoreGraphics",
+        "//third_party/apple_frameworks:CoreMedia",
+        "//third_party/apple_frameworks:UIKit",
     ] + select({
         "//mediapipe:ios_i386": [],
         "//mediapipe:ios_x86_64": [],
         "//conditions:default": [
             "//mediapipe/graphs/face_detection:mobile_calculators",
+            "//mediapipe/modules/face_detection:face_detection_full_range_gpu"
         ],
     }),
 )

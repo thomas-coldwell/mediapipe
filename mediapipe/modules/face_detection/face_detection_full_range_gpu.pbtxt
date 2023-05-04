@@ -6,7 +6,7 @@ type: "FaceDetectionFullRangeGpu"
 input_stream: "IMAGE:image"
 
 # Detected faces. (std::vector<Detection>)
-output_stream: "DETECTIONS:detections"
+output_stream: "DETECTIONS:face_detections"
 
 graph_options: {
   [type.googleapis.com/mediapipe.FaceDetectionOptions] {}
@@ -15,7 +15,7 @@ graph_options: {
 node {
   calculator: "FaceDetectionFullRange"
   input_stream: "IMAGE:image"
-  output_stream: "DETECTIONS:detections"
+  output_stream: "DETECTIONS:face_detections"
   node_options: {
     [type.googleapis.com/mediapipe.FaceDetectionOptions] {
       gpu_origin: TOP_LEFT
