@@ -11,8 +11,6 @@ input_side_packet: "num_hands"
 # Model complexity (0 or 1). (int)
 input_side_packet: "model_complexity"
 
-# GPU image. (GpuBuffer)
-output_stream: "output_video"
 # Collection of detected/predicted hands, each represented as a list of
 # landmarks. (std::vector<NormalizedLandmarkList>)
 output_stream: "hand_landmarks"
@@ -30,7 +28,7 @@ output_stream: "hand_landmarks"
 node {
   calculator: "FlowLimiterCalculator"
   input_stream: "input_video"
-  input_stream: "FINISHED:output_video"
+  input_stream: "FINISHED:hand_landmarks"
   input_stream_info: {
     tag_index: "FINISHED"
     back_edge: true
@@ -49,17 +47,4 @@ node {
   output_stream: "PALM_DETECTIONS:palm_detections"
   output_stream: "HAND_ROIS_FROM_LANDMARKS:hand_rects_from_landmarks"
   output_stream: "HAND_ROIS_FROM_PALM_DETECTIONS:hand_rects_from_palm_detections"
-}
-
-# Subgraph that renders annotations and overlays them on top of the input
-# images (see hand_renderer_gpu.pbtxt).
-node {
-  calculator: "HandRendererSubgraph"
-  input_stream: "IMAGE:throttled_input_video"
-  input_stream: "DETECTIONS:palm_detections"
-  input_stream: "LANDMARKS:hand_landmarks"
-  input_stream: "HANDEDNESS:handedness"
-  input_stream: "NORM_RECTS:0:hand_rects_from_palm_detections"
-  input_stream: "NORM_RECTS:1:hand_rects_from_landmarks"
-  output_stream: "IMAGE:output_video"
 }
