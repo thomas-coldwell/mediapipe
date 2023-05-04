@@ -83,7 +83,7 @@ static const int kNumHands = 2;
   MPPGraph* newGraph = [[MPPGraph alloc] initWithGraphConfig:config];
   [newGraph setSidePacket:(mediapipe::MakePacket<int>(kNumHands)) named:kNumHandsInputSidePacket];
   [newGraph setSidePacket:(mediapipe::MakePacket<int>(0)) named:kModelComplexity];
-  [newGraph addFrameOutputStream:kOutputStream outputPacketType:MPPPacketTypePixelBuffer];
+  // [newGraph addFrameOutputStream:kOutputStream outputPacketType:MPPPacketTypePixelBuffer];
   [newGraph addFrameOutputStream:kOutputLandmarks outputPacketType:MPPPacketTypeRaw];
   return newGraph;
 }

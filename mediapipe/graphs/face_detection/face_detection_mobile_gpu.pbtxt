@@ -3,8 +3,6 @@
 # GPU buffer. (GpuBuffer)
 input_stream: "input_video"
 
-# Output image with rendered results. (GpuBuffer)
-output_stream: "output_video"
 # Detected faces. (std::vector<Detection>)
 output_stream: "face_detections"
 
@@ -21,7 +19,7 @@ output_stream: "face_detections"
 node {
   calculator: "FlowLimiterCalculator"
   input_stream: "input_video"
-  input_stream: "FINISHED:output_video"
+  input_stream: "FINISHED:face_detections"
   input_stream_info: {
     tag_index: "FINISHED"
     back_edge: true
@@ -34,25 +32,4 @@ node {
   calculator: "FaceDetectionFullRangeGpu"
   input_stream: "IMAGE:throttled_input_video"
   output_stream: "DETECTIONS:face_detections"
-}
-
-# Converts the detections to drawing primitives for annotation overlay.
-node {
-  calculator: "DetectionsToRenderDataCalculator"
-  input_stream: "DETECTIONS:face_detections"
-  output_stream: "RENDER_DATA:render_data"
-  node_options: {
-    [type.googleapis.com/mediapipe.DetectionsToRenderDataCalculatorOptions] {
-      thickness: 4.0
-      color { r: 255 g: 0 b: 0 }
-    }
-  }
-}
-
-# Draws annotations and overlays them on top of the input images.
-node {
-  calculator: "AnnotationOverlayCalculator"
-  input_stream: "IMAGE_GPU:throttled_input_video"
-  input_stream: "render_data"
-  output_stream: "IMAGE_GPU:output_video"
 }
