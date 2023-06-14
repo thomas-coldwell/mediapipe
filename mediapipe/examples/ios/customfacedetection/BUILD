@@ -28,7 +28,6 @@ ios_framework(
         "FaceDetection.h"
     ],
     infoplists = ["Info.plist"],
-    visibility = ["//visibility:public"],
     bundle_id = "com.thomascoldwell.FaceDetection",
     families = ["iphone", "ipad"],
     minimum_os_version = MIN_IOS_VERSION,
@@ -50,8 +49,9 @@ objc_library(
         "//mediapipe/graphs/face_detection:face_detection_mobile_gpu.binarypb",
         "//mediapipe/modules/face_detection:face_detection_full_range_sparse.tflite",
     ],
-    visibility = ["//visibility:public"],
     deps = [
+        "//mediapipe/tasks/ios/common:MPPCommon",
+        "//mediapipe/tasks/ios/vision/core:MPPImage",
         "//mediapipe/objc:mediapipe_framework_ios",
         "//mediapipe/objc:mediapipe_input_sources_ios",
         "//mediapipe/objc:mediapipe_layer_renderer",
